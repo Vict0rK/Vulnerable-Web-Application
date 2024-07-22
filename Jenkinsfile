@@ -6,6 +6,11 @@ pipeline {
         }
     }
 
+    environment {
+        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk-amd64'
+        PATH = '$JAVA_HOME/bin:$PATH'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -19,10 +24,6 @@ pipeline {
                 apt-get update
                 apt-get install -y openjdk-11-jdk
                 '''
-                // Set JAVA_HOME environment variable
-                sh 'echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc'
-                sh 'echo "export PATH=$JAVA_HOME/bin:$PATH" >> ~/.bashrc'
-                sh 'source ~/.bashrc'
             }
         }
 
