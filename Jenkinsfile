@@ -1,29 +1,10 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16'
-            args '-u root' // This allows you to run commands as the root user to install packages
-        }
-    }
-
-    environment {
-        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk-amd64'
-        PATH = '$JAVA_HOME/bin:$PATH'
-    }
+    agent any
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/Vict0rK/Vulnerable-Web-Application.git'
-            }
-        }
-
-        stage('Install Java') {
-            steps {
-                sh '''
-                apt-get update
-                apt-get install -y openjdk-11-jdk
-                '''
+                git branch: 'master', url: 'https://github.com/Vict0rK/Vulnerable-WebApplication.git'
             }
         }
 
@@ -32,9 +13,6 @@ pipeline {
                 script {
                     // Define the SonarQube scanner tool
                     def scannerHome = tool 'SonarQube'
-
-                    // Print the path of SonarQube scanner
-                    sh "echo SonarQube Scanner Path: ${scannerHome}"
 
                     // Run the SonarQube scanner
                     withSonarQubeEnv('SonarQube') {
