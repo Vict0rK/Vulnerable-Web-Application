@@ -2,6 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:16'
+            args '-u root' // This allows you to run commands as the root user to install packages
         }
     }
 
@@ -9,6 +10,19 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/Vict0rK/Vulnerable-Web-Application.git'
+            }
+        }
+
+        stage('Install Java') {
+            steps {
+                sh '''
+                apt-get update
+                apt-get install -y openjdk-11-jdk
+                '''
+                // Set JAVA_HOME environment variable
+                sh 'echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc'
+                sh 'echo "export PATH=$JAVA_HOME/bin:$PATH" >> ~/.bashrc'
+                sh 'source ~/.bashrc'
             }
         }
 
