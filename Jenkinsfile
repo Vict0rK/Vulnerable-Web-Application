@@ -2,6 +2,13 @@ pipeline {
     agent any
 
     stages {
+        stage('Setup') {
+            steps {
+                // Check Node.js installation
+                sh 'node -v || curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs'
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/Vict0rK/Vulnerable-Web-Application.git'
