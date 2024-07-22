@@ -17,6 +17,10 @@ pipeline {
                     if (nodeVersion == "not found") {
                         echo "Node.js not found. Installing..."
                         sh '''
+                        # Install xz-utils if not present
+                        if ! command -v xz > /dev/null; then
+                            apt-get update && apt-get install -y xz-utils
+                        fi
                         # Download Node.js binaries
                         curl -fsSL https://nodejs.org/dist/v16.17.0/node-v16.17.0-linux-x64.tar.xz -o node.tar.xz
                         # Extract the binaries
